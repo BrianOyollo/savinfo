@@ -35,10 +35,11 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    customer_code = serializers.CharField(source='customer.code', read_only=True)
     class Meta:
         model = Order
-        fields = ('id', 'item', 'quantity','status', 'created_at', 'customer')
-        read_only_fields = ('id',)
+        fields = ('id', 'item', 'quantity','status', 'created_at', 'customer', 'customer_code', )
+        read_only_fields = ('id','customer_code')
 
 
 

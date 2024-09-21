@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .serializers import CustomerSerializer, NewCustomerSerializer, OrderSerializer
-from .permissions import IsAdminOrCustomer
+from .permissions import IsAdminOrCustomer, IsAdminOrOwnOrder
 from .models import Customer, Order
 from .send_sms import send_order_confirmation_sms, send_order_update_sms
 
@@ -56,7 +56,8 @@ class CustomerDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class OrderListCreateView(APIView):
+class OrdersListCreateView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def post(self, request, format=None):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
@@ -70,6 +71,37 @@ class OrderListCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request, format=None):
-        queryset = Order.objects.all()
+        if request.user.is_superuser:
+            queryset = Order.objects.all()
+        else:
+            queryset = Order.objects.filter(customer__user = request.user)
         serializer = OrderSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class OrderDetailView(APIView):
+    permission_classes = (IsAdminOrOwnOrder,)
+    def get_order(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        self.check_object_permissions(self.request, order)
+        return order
+    
+    def get(self, request, pk, format=None):
+        order = self.get_order(request, pk)
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        order = self.get_order(request, pk)
+        serializer = OrderSerializer(order, data=request.data, partial=True)
+        if serializer.is_valid():
+            updated_order = serializer.save()
+            # send order update message
+            customer = updated_order.customer
+            send_order_update_sms(customer, updated_order.item, updated_order.quantity)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        order = self.get_order(request, pk)
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
