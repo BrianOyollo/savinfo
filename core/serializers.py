@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from .models import Customer
+from .models import Customer, Order
 from .utils import generate_unique_code
 
 User = get_user_model()
@@ -32,6 +32,13 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ('id', 'name', 'phone_number', 'code', 'created_at', 'user')
         read_only_fields = ('id','user', 'code')
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('id', 'item', 'quantity','status', 'created_at', 'customer')
+        read_only_fields = ('id',)
 
 
 
