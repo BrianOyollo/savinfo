@@ -64,8 +64,10 @@ class OrdersListCreateView(APIView):
             order = serializer.save()
 
             # send order confirmation message
+            # you can always force a customer to provide a phone_number before placing an order
             customer = order.customer
-            send_order_confirmation_sms(customer, order.item, order.quantity)
+            if customer.phone_number:
+                send_order_confirmation_sms(customer, order.item, order.quantity)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -95,9 +97,11 @@ class OrderDetailView(APIView):
         serializer = OrderSerializer(order, data=request.data, partial=True)
         if serializer.is_valid():
             updated_order = serializer.save()
+
             # send order update message
             customer = updated_order.customer
-            send_order_update_sms(customer, updated_order.item, updated_order.quantity)
+            if customer.phone_number: 
+                send_order_update_sms(customer, updated_order.item, updated_order.quantity)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

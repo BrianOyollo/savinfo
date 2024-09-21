@@ -8,7 +8,7 @@ User = get_user_model()
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
     name = models.CharField(max_length=100, null=False, blank=False)
-    phone_number = models.CharField(max_length=13, null=False, blank=False)
+    phone_number = models.CharField(max_length=13, null=True, blank=True)
     code = models.CharField(max_length=8, null = False, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

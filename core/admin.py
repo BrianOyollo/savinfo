@@ -3,7 +3,7 @@ from .models import Customer, Order
 
 class CustomCustomerAdmin(admin.ModelAdmin):
     model = Customer
-    list_display = ('code', 'name', 'phone_number', )
+    list_display = ('id','code', 'name', 'phone_number', )
 
 class CustomOrderAdmin(admin.ModelAdmin):
     model = Order
