@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -30,10 +30,9 @@ class CustomerDetailView(APIView):
     permission_classes = (IsAdminOrCustomer,)
 
     def get_customer(self, request, pk):
-        try:
-            return Customer.objects.get(pk=pk)
-        except Customer.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        customer = get_object_or_404(Customer, pk=pk)
+        self.check_object_permissions(self.request, customer)
+        return customer
         
     def get(self, request, pk, format=None):
         customer = self.get_customer(request, pk)

@@ -59,8 +59,9 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = (  
-  'drf_social_oauth2.backends.DjangoOAuth2',
-  'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 REST_FRAMEWORK = {
@@ -69,6 +70,14 @@ REST_FRAMEWORK = {
        'drf_social_oauth2.authentication.SocialAuthentication',
    )
 }
+
+# google 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
