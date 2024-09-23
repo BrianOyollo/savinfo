@@ -22,7 +22,11 @@ class NewCustomerSerializer(serializers.Serializer):
         with transaction.atomic():
             user = User.objects.create_user(username=username, email=email, password=password)
             code = generate_unique_code()
-            customer = Customer.objects.create(user=user, phone_number=phone_number, code=code, name=username)
+            customer = Customer.objects.get(user=user)
+            customer.phone_number = phone_number
+            customer.code = code
+            customer.save()
+            # customer = Customer.objects.create(user=user, phone_number=phone_number, code=code, name=username)
 
         return customer
 

@@ -12,5 +12,4 @@ def create_customer(sender, instance, created, **kwargs):
         user = instance
         name = instance.username
         code  = generate_unique_code()
-
-        Customer.objects.create(user=user, name=name, code=code)
+        Customer.objects.get_or_create(user=user, name=name, code=code)
