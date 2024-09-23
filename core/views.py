@@ -14,7 +14,7 @@ User = get_user_model()
 # Create your views here.
 
 class CustomersListCreateView(APIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAdminUser,) # remove to allow customers to users register as customers
 
     def post(self, request, format=None):
         serializer = NewCustomerSerializer(data=request.data)
@@ -42,7 +42,7 @@ class CustomerDetailView(APIView):
         serializer = CustomerSerializer(customer)
         return Response(serializer.data)
     
-    def put(self, request, pk, format=None):
+    def patch(self, request, pk, format=None):
         customer = self.get_customer(request, pk)
         serializer = CustomerSerializer(customer, data=request.data, partial=True)
         if serializer.is_valid():
@@ -58,8 +58,15 @@ class CustomerDetailView(APIView):
 
 class OrdersListCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request, format=None):
-        serializer = OrderSerializer(data=request.data)
+        
+        # admins can place orders for customers. A customer can only place their orders. 
+        if request.user.is_superuser or int(request.data['customer']) == request.user.customer.id:
+            serializer = OrderSerializer(data=request.data) 
+        else:
+            return Response({'error': 'Only admins can place orders for other customers'}, status=status.HTTP_403_FORBIDDEN)
+
         if serializer.is_valid():
             order = serializer.save()
 
@@ -92,7 +99,7 @@ class OrderDetailView(APIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data)
     
-    def put(self, request, pk, format=None):
+    def patch(self, request, pk, format=None):
         order = self.get_order(request, pk)
         serializer = OrderSerializer(order, data=request.data, partial=True)
         if serializer.is_valid():
