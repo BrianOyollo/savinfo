@@ -59,8 +59,12 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = (  
+
+    # google oauth2
     # 'social_core.backends.google.GoogleOAuth2',
-    'drf_social_oauth2.backends.GoogleIdentityBackend', # openid
+    'drf_social_oauth2.backends.GoogleIdentityBackend',
+
+    # drf-social-oauth2
     'drf_social_oauth2.backends.DjangoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -121,8 +125,12 @@ WSGI_APPLICATION = 'savinfo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': os.getenv('POSTGRES_NAME'), 
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'), 
+        'PORT': os.getenv('POSTGRES_PORT')
     }
 }
 

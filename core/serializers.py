@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from .models import Customer, Order
 from .utils import generate_unique_code
 
@@ -20,12 +20,16 @@ class NewCustomerSerializer(serializers.Serializer):
 
         # Create User and Customer
         with transaction.atomic():
-            user = User.objects.create_user(username=username, email=email, password=password)
-            code = generate_unique_code()
-            customer = Customer.objects.get(user=user)
-            customer.phone_number = phone_number
-            customer.code = code
-            customer.save()
+            try:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                code = generate_unique_code()
+                customer = Customer.objects.get(user=user)
+                customer.phone_number = phone_number
+                customer.code = code
+                customer.save()
+            except IntegrityError as e:
+                print(e.__cause__.diag.constraint_name)
+                raise serializers.ValidationError('Email or Username already exists')
             # customer = Customer.objects.create(user=user, phone_number=phone_number, code=code, name=username)
 
         return customer
