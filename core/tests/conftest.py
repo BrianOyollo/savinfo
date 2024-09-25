@@ -55,6 +55,7 @@ def create_order(create_user2):
     order = Order.objects.create(item='2000 Toyota Land Cruiser', quantity=1, customer=customer)
     return order
 
+
 @pytest.fixture
 def mock_send_sms():
     with patch('core.send_sms.sms.send') as mock_send:
@@ -70,5 +71,5 @@ def mock_send_sms():
                 }]
             }
         }
-        
+
         yield mock_send 
