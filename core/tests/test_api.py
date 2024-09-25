@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
+
 import pytest
 from ..models import Customer, Order
 
@@ -179,7 +180,7 @@ class TestOrderEndpoints:
         ('authenticated_superuser', 201), # authenticated admins can create orders for customers
         ('api_client', 401), # unautheticated users can't create orders
     ])
-    def test_create_order_admin(self, create_user, user_role, expected_status, request):
+    def test_create_order_admin(self, create_user, user_role, expected_status, mock_send_sms, request):
         # create a customer
         customer = create_user.customer
 
@@ -200,7 +201,7 @@ class TestOrderEndpoints:
             assert response.data['customer_code'] == customer.code
 
 
-    def test_create_order_authenicated_user(self, create_user, api_client):
+    def test_create_order_authenicated_user(self, create_user, mock_send_sms, api_client):
         user = create_user
         print(f'user:{user}')
         customer = user.customer
@@ -242,7 +243,7 @@ class TestOrderEndpoints:
         response = authenticated_superuser.post('/api/orders/', data=payload, format='json')
         assert response.status_code == 400
 
-    def test_create_order_missing_item(self, create_user, authenticated_superuser):
+    def test_create_order_missing_item(self, create_user,  authenticated_superuser):
         customer = create_user.customer
         payload = {
             # 'item':'2000 Toyota Land Cruiser',
@@ -303,7 +304,7 @@ class TestOrderEndpoints:
         response = authenticated_user.get(f'/api/orders/{order.id}/', format='json')
         assert response.status_code == 403
 
-    def test_update_order_admin(self, create_order, authenticated_superuser):
+    def test_update_order_admin(self, create_order, mock_send_sms, authenticated_superuser):
         order = create_order
         payload = {
             'quantity':2,
@@ -317,7 +318,7 @@ class TestOrderEndpoints:
         assert response.data['status'] == payload['status']
 
     
-    def test_update_customer_own_order(self, create_order, api_client):
+    def test_update_customer_own_order(self, create_order, mock_send_sms,  api_client):
         order = create_order
         payload = {
             'quantity':2,
