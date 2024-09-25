@@ -39,9 +39,6 @@ jobs:
             
             - name: Apply database migrations
               run: python manage.py migrate
-
-            - name: Run tests
-              run: |
             
             - name: Run tests with coverage
               env:
