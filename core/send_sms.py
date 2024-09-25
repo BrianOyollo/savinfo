@@ -67,4 +67,4 @@ def send_order_update_sms(customer, order, quantity):
         return response
     except Exception as e:
         print (f'Order update message not sent: {e}')
-        return 
+        return None
