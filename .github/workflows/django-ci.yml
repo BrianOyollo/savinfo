@@ -15,6 +15,28 @@ jobs:
         SMS_API_USERNAME: ${{ secrets.SMS_API_USERNAME }}
         SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
         SENDER_SHORTCODE: ${{ secrets.SENDER_SHORTCODE }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_NAME }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: 5432
+    
+    services:
+        postgres:
+            image: postgres
+            env:
+                POSTGRES_DB: ${{ env.POSTGRES_DB }}
+                POSTGRES_USER: ${{ env.POSTGRES_USER }}
+                POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+                POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
+                POSTGRES_PORT: 5432
+            ports:
+                - 5432:5432
+            options: >-
+                --health-cmd pg_isready
+                --health-interval 10s
+                --health-timeout 5s
+                --health-retries 5
 
     strategy:
       max-parallel: 4
