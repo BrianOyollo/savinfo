@@ -11,7 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
         SMS_API_USERNAME: ${{ secrets.SMS_API_USERNAME }}
         SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
         SENDER_SHORTCODE: ${{ secrets.SENDER_SHORTCODE }}
@@ -20,6 +19,7 @@ jobs:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
         POSTGRES_PORT: 5432
+        SECRET_KEY: ${{secrets.SECRET_KEY}}
     
     services:
         postgres:
