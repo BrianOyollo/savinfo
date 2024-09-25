@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 africastalking.initialize(
-    username='sandbox',
+    username=os.getenv('SMS_API_USERNAME'),
     api_key= os.getenv('SMS_API_KEY')
 )
 sms = africastalking.SMS
