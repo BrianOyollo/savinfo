@@ -8,6 +8,12 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        
+        env:
+            SMS_API_USERNAME: ${{ secrets.SMS_API_USERNAME }}
+            SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
+            SENDER_SHORTCODE: ${{ secrets.SENDER_SHORTCODE }}
+
         services:
             postgres:
                 image: postgres:latest
