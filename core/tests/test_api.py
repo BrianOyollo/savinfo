@@ -6,8 +6,10 @@ import pytest
 from ..models import Customer, Order
 
 User = get_user_model()
-pytestmark = pytest.mark.django_db
+# pytestmark = pytest.mark.django_db
 
+
+@pytest.mark.django_db
 class TestCustomerEndpoints:
 
     @pytest.mark.parametrize('user_role, expected_status',[
@@ -173,7 +175,7 @@ class TestCustomerEndpoints:
 
 
 
-
+@pytest.mark.django_db
 class TestOrderEndpoints:
 
     @pytest.mark.parametrize('user_role, expected_status', [
