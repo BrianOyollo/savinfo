@@ -44,9 +44,10 @@ def send_order_confirmation_sms(customer, order, quantity):
 
     try:
         response = sms.send(message,[customer_phone_number], sender)
-        # print(response)
+        return response
     except Exception as e:
         print (f'Order confirmation message not sent: {e}')
+        return None
 
 
 def send_order_update_sms(customer, order, quantity):
@@ -62,6 +63,8 @@ def send_order_update_sms(customer, order, quantity):
     message = f"Hello {customer}, you have updated your order to {order}*{quantity}"
 
     try:
-        sms.send(message,[customer_phone_number], sender)
+        response = sms.send(message,[customer_phone_number], sender)
+        return response
     except Exception as e:
         print (f'Order update message not sent: {e}')
+        return 
