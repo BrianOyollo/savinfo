@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator 
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 
 User = get_user_model()
@@ -10,7 +10,7 @@ User = get_user_model()
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer')
     name = models.CharField(max_length=100, null=False, blank=False)
-    phone_number = models.CharField(max_length=13, validators=[MinValueValidator(10)],  null=True, blank=True)
+    phone_number = models.CharField(max_length=13, validators=[MinLengthValidator(10)],  null=True, blank=True)
     code = models.CharField(max_length=8, null = False, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

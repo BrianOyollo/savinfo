@@ -17,7 +17,7 @@ class TestCustomerEndpoints:
         payload = {
             'email':'testuser1@example.com',
             'username':'testuser1',
-            'phone_number':'123456',
+            'phone_number':'0712345678',
             'password':'TestPassword1'
         }
 
@@ -39,7 +39,7 @@ class TestCustomerEndpoints:
         payload = {
             'email':'testuser1@example.com',
             'username':'testuser1',
-            'phone_number':'123456',
+            'phone_number':'0712345678',
             'password':'TestPassword1'
         }
 
@@ -56,7 +56,7 @@ class TestCustomerEndpoints:
         payload = {
             'email': 'testuser2@example.com',
             # 'username' is missing
-            'phone_number': '654321',
+            'phone_number':'0712345678',
             'password': 'TestPassword2'
         }
         response = authenticated_superuser.post('/api/customers/', data=payload, format='json')
@@ -66,7 +66,7 @@ class TestCustomerEndpoints:
         payload = {
             'email': 'testuser3@example.com',
             'username': 'testuser3',
-            'phone_number': '123456',
+            'phone_number':'0712345678',
             'password': 'TestPassword3'
         }
         # create the customer
@@ -85,7 +85,7 @@ class TestCustomerEndpoints:
         payload = {
             'email': 'testuser4@example.com',
             'username': 'testuser4',
-            'phone_number': '123456',
+            'phone_number':'0712345678',
             'password': 'TestPassword4'
         }
 
@@ -116,7 +116,7 @@ class TestCustomerEndpoints:
         payload = {
             'email': 'testuser5@example.com',
             'username': 'testuser5',
-            'phone_number': '123456',
+            'phone_number':'0712345678',
             'password': 'TestPassword5'
         }
 
@@ -129,7 +129,7 @@ class TestCustomerEndpoints:
             # Update the customer's details
             update_payload = {
                 'name': 'TestUser5',
-                'phone_number': '654321'
+                'phone_number':'0722345678',
             }
             response = client.patch(f'/api/customers/{customer_id}/', data=update_payload, format='json')
             assert response.status_code == expected_status
@@ -149,7 +149,7 @@ class TestCustomerEndpoints:
         payload = {
             'email': 'testuser6@example.com',
             'username': 'testuser6',
-            'phone_number': '123456',
+            'phone_number':'0712345678',
             'password': 'TestPassword6'
         }
 

@@ -21,7 +21,7 @@ class TestCustomerModel:
         with pytest.raises(IntegrityError):
             Customer.objects.create(
                 name = 'testuser',
-                phone_number = '1234567890',
+                phone_number = '0712345678',
                 code = '123456',
             )
     def test_create_customer_with_noexisting_user(self):
@@ -29,13 +29,13 @@ class TestCustomerModel:
             Customer.objects.create(
                 user = User.objects.get(email='nonexistentuser@example.com'),
                 name = 'testuser',
-                phone_number = '1234567890',
+                phone_number = '0712345678',
                 code = '123456',
             )
     
     def test_update_customer(self, create_user):
         new_name = 'Test User'
-        phone_number = '1234567890'
+        phone_number = '0722345678'
 
         customer = Customer.objects.get(user = create_user)
         customer.name =new_name
