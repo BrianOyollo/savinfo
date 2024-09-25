@@ -43,14 +43,7 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r requirements.txt 
             
-            - name: Apply database migrations
-              run: python manage.py migrate
-            
             - name: Run tests with coverage
-              env:
-                POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-                POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-                POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
               run: |
                 coverage run -m pytest --ds=savinfo.settings
                 coverage report -m
