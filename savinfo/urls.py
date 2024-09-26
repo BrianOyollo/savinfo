@@ -16,10 +16,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import re_path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+import os
+
+api_info = openapi.Info(
+    title="Savinfo API: Backend Technical Challenge",
+    default_version='v1',
+    description="Test description",
+   )
+   
+schema_view = get_schema_view(
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api-auth/', include('rest_framework.urls')),
-    path('api-oauth/', include('drf_social_oauth2.urls',namespace='drf')),
+    path('oauth/', include('drf_social_oauth2.urls',namespace='drf')),
     path('api/', include('core.urls')),
 ]

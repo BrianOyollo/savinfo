@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'social_django',
     'drf_social_oauth2',
     'corsheaders',
+    'drf_yasg',
 
     # local apps
     "users.apps.UsersConfig",
@@ -72,7 +73,8 @@ REST_FRAMEWORK = {
    'DEFAULT_AUTHENTICATION_CLASSES': [
        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  
        'drf_social_oauth2.authentication.SocialAuthentication',
-   ]
+   ],
+
 }
 
 # google 
@@ -101,7 +103,7 @@ ROOT_URLCONF = 'savinfo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,8 +174,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False,
+   'SECURITY_DEFINITIONS': {
+      'Your App API - Swagger': {
+         'type': 'oauth2',
+         'authorizationUrl': None,
+         'tokenUrl': 'http://127.0.0.1:8000/oauth/token',
+         'flow': 'password',
+      }
+   },
+   'OAUTH2_CONFIG': {
+      'clientId': os.getenv('client_id'),
+      'clientSecret': os.getenv('client_secret'),
+   },
+   'DEFAULT_INFO': 'savinfo.urls.api_info',
+}

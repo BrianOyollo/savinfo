@@ -4,6 +4,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from drf_yasg.utils import swagger_auto_schema
 from .serializers import CustomerSerializer, NewCustomerSerializer, OrderSerializer
 from .permissions import IsAdminOrCustomer, IsAdminOrOwnOrder
 from .models import Customer, Order
@@ -14,8 +15,9 @@ User = get_user_model()
 # Create your views here.
 
 class CustomersListCreateView(APIView):
-    permission_classes = (permissions.IsAdminUser,) # remove to allow customers to users register as customers
+    permission_classes = (permissions.IsAdminUser,) # remove to allow self registration
 
+    @swagger_auto_schema(operation_description = "Create a new customer", request_body=NewCustomerSerializer)
     def post(self, request, format=None):
         serializer = NewCustomerSerializer(data=request.data)
         if serializer.is_valid():
@@ -23,7 +25,8 @@ class CustomersListCreateView(APIView):
             customer_data = CustomerSerializer(customer).data 
             return Response(customer_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+    @swagger_auto_schema(operation_description = "List customers", responses={200: CustomerSerializer(many=True)})
     def get(self, request, format=None):
         queryset = Customer.objects.all()
         serializer = CustomerSerializer(queryset, many=True)
@@ -36,12 +39,14 @@ class CustomerDetailView(APIView):
         customer = get_object_or_404(Customer, pk=pk)
         self.check_object_permissions(self.request, customer)
         return customer
-        
+
+    @swagger_auto_schema(operation_description = "Retrieve customer", responses={200: CustomerSerializer})   
     def get(self, request, pk, format=None):
         customer = self.get_customer(request, pk)
         serializer = CustomerSerializer(customer)
         return Response(serializer.data)
     
+    @swagger_auto_schema(operation_description = "Update customer details", request_body=CustomerSerializer)
     def patch(self, request, pk, format=None):
         customer = self.get_customer(request, pk)
         serializer = CustomerSerializer(customer, data=request.data, partial=True)
@@ -50,6 +55,7 @@ class CustomerDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(operation_description = "Delete customer")
     def delete(self, request, pk, format=None):
         customer = self.get_customer(request, pk)
         customer.delete()
@@ -59,6 +65,7 @@ class CustomerDetailView(APIView):
 class OrdersListCreateView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
+    @swagger_auto_schema(operation_description = "Create a new order", request_body=OrderSerializer)
     def post(self, request, format=None):
         
         # admins can place orders for customers. A customer can only place their orders. 
@@ -79,6 +86,7 @@ class OrdersListCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    @swagger_auto_schema(operation_description = "List orders", responses={200: OrderSerializer(many=True)})  
     def get(self, request, format=None):
         if request.user.is_superuser:
             queryset = Order.objects.all()
@@ -94,11 +102,13 @@ class OrderDetailView(APIView):
         self.check_object_permissions(self.request, order)
         return order
     
+    @swagger_auto_schema(operation_description = "Retrieve order", responses={200: OrderSerializer})
     def get(self, request, pk, format=None):
         order = self.get_order(request, pk)
         serializer = OrderSerializer(order)
         return Response(serializer.data)
     
+    @swagger_auto_schema(operation_description = "Update order", request_body=OrderSerializer)
     def patch(self, request, pk, format=None):
         order = self.get_order(request, pk)
         serializer = OrderSerializer(order, data=request.data, partial=True)
@@ -112,6 +122,7 @@ class OrderDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    @swagger_auto_schema(operation_description = "Delete order")
     def delete(self, request, pk, format=None):
         order = self.get_order(request, pk)
         order.delete()
