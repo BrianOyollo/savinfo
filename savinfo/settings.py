@@ -192,8 +192,8 @@ SWAGGER_SETTINGS = {
       }
    },
    'OAUTH2_CONFIG': {
-      'clientId': os.getenv('client_id'),
-      'clientSecret': os.getenv('client_secret'),
+      'clientId': os.getenv('CLIENT_ID'),
+      'clientSecret': os.getenv('CLIENT_SECRET'),
    },
    'DEFAULT_INFO': 'savinfo.urls.api_info',
    'SPEC_URL': '/static/swagger/swagger.json',
