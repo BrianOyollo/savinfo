@@ -1,0 +1,718 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Savinfo API",
+      "description": "Savannah Informatics Backend Technical Challenge",
+      "version": "v1"
+    },
+    "basePath": "/",
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "securityDefinitions": {
+      "Your App API - Swagger": {
+        "type": "oauth2",
+        "tokenUrl": "http://127.0.0.1:8000/oauth/token",
+        "flow": "password"
+      }
+    },
+    "security": [
+      {
+        "Your App API - Swagger": []
+      }
+    ],
+    "paths": {
+      "/api/customers/": {
+        "get": {
+          "operationId": "api_customers_list",
+          "description": "List customers",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Customer"
+                }
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "post": {
+          "operationId": "api_customers_create",
+          "description": "Create a new customer",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/NewCustomer"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/NewCustomer"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "parameters": []
+      },
+      "/api/customers/{id}/": {
+        "get": {
+          "operationId": "api_customers_read",
+          "description": "Retrieve customer",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "patch": {
+          "operationId": "api_customers_partial_update",
+          "description": "Update customer details",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "delete": {
+          "operationId": "api_customers_delete",
+          "description": "Delete customer",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/api/orders/": {
+        "get": {
+          "operationId": "api_orders_list",
+          "description": "List orders",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Order"
+                }
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "post": {
+          "operationId": "api_orders_create",
+          "description": "Create a new order",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "parameters": []
+      },
+      "/api/orders/{id}/": {
+        "get": {
+          "operationId": "api_orders_read",
+          "description": "Retrieve order",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "patch": {
+          "operationId": "api_orders_partial_update",
+          "description": "Update order",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "delete": {
+          "operationId": "api_orders_delete",
+          "description": "Delete order",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "api"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/oauth/convert-token/": {
+        "post": {
+          "operationId": "oauth_convert-token_create",
+          "summary": "Implements an endpoint to convert a provider token to an access token",
+          "description": "The endpoint is used in the following flows:\n\n* Authorization code\n* Client credentials",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ConvertToken"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/ConvertTokenResponse"
+              }
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        },
+        "parameters": []
+      },
+      "/oauth/disconnect-backend/": {
+        "post": {
+          "operationId": "oauth_disconnect-backend_create",
+          "description": "An endpoint for disconnect social auth backend providers such as Facebook.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/DisconnectBackend"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        },
+        "parameters": []
+      },
+      "/oauth/invalidate-refresh-tokens/": {
+        "post": {
+          "operationId": "oauth_invalidate-refresh-tokens_create",
+          "description": "Invalidate all refresh tokens associated with a client id.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/InvalidateRefreshToken"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        },
+        "parameters": []
+      },
+      "/oauth/invalidate-sessions/": {
+        "post": {
+          "operationId": "oauth_invalidate-sessions_create",
+          "description": "Delete all access tokens associated with a client id.",
+          "parameters": [
+            {
+              "name": "client_id",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/InvalidateSessions"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        },
+        "parameters": []
+      },
+      "/oauth/revoke-token/": {
+        "post": {
+          "operationId": "oauth_revoke-token_create",
+          "description": "Implements an endpoint to revoke access or refresh tokens",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/RevokeToken"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Token revoked successfully"
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        }
+      },
+      "/oauth/token/": {
+        "post": {
+          "operationId": "oauth_token_create",
+          "summary": "Implements an endpoint to provide access tokens",
+          "description": "The endpoint is used in the following flows:\n\n* Authorization code\n* Password\n* Client credentials",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/OAuthToken"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "access_token": {
+                    "type": "string"
+                  },
+                  "refresh_token": {
+                    "type": "string"
+                  },
+                  "expires_in": {
+                    "type": "integer"
+                  },
+                  "token_type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "oauth"
+          ]
+        },
+        "parameters": []
+      }
+    },
+    "definitions": {
+      "Customer": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "phone_number": {
+            "title": "Phone number",
+            "type": "string",
+            "maxLength": 13,
+            "minLength": 10,
+            "x-nullable": true
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "readOnly": true,
+            "minLength": 1
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "user": {
+            "title": "User",
+            "type": "integer",
+            "readOnly": true
+          }
+        }
+      },
+      "NewCustomer": {
+        "required": [
+          "username",
+          "email",
+          "phone_number",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          },
+          "phone_number": {
+            "title": "Phone number",
+            "type": "string",
+            "maxLength": 15,
+            "minLength": 1
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "minLength": 12
+          }
+        }
+      },
+      "Order": {
+        "required": [
+          "item",
+          "customer"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "item": {
+            "title": "Item",
+            "type": "string",
+            "maxLength": 250,
+            "minLength": 1
+          },
+          "quantity": {
+            "title": "Quantity",
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 1
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "enum": [
+              "completed",
+              "pending",
+              "canceled"
+            ]
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "customer": {
+            "title": "Customer",
+            "type": "integer"
+          },
+          "customer_code": {
+            "title": "Customer code",
+            "type": "string",
+            "readOnly": true,
+            "minLength": 1
+          }
+        }
+      },
+      "InvalidateRefreshToken": {
+        "required": [
+          "client_id"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "InvalidateSessions": {
+        "required": [
+          "client_id"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "ConvertToken": {
+        "required": [
+          "grant_type",
+          "backend",
+          "client_id",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "type": "string",
+            "maxLength": 50
+          },
+          "backend": {
+            "title": "Backend",
+            "type": "string",
+            "maxLength": 200
+          },
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "maxLength": 200
+          },
+          "token": {
+            "title": "Token",
+            "type": "string",
+            "maxLength": 5000
+          }
+        }
+      },
+      "ConvertTokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer"
+          },
+          "token_type": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "RevokeToken": {
+        "required": [
+          "client_id"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "DisconnectBackend": {
+        "required": [
+          "backend",
+          "association_id"
+        ],
+        "type": "object",
+        "properties": {
+          "backend": {
+            "title": "Backend",
+            "type": "string",
+            "maxLength": 200
+          },
+          "association_id": {
+            "title": "Association ID",
+            "type": "integer"
+          }
+        }
+      },
+      "OAuthToken": {
+        "required": [
+          "client_id",
+          "client_secret",
+          "grant_type",
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "client_id": {
+            "title": "Client ID",
+            "type": "string",
+            "maxLength": 200
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string",
+            "maxLength": 200
+          },
+          "grant_type": {
+            "title": "Grant Type",
+            "type": "string",
+            "enum": [
+              "password",
+              "authorization_code",
+              "client_credentials"
+            ],
+            "description": "The type of grant being used for the token request.\nSupported types: `password`, `authorization_code`, `client_credentials`.\n"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string",
+            "description": "Required for the password grant type.",
+            "x-nullable": true
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "description": "Required for the password grant type.",
+            "x-nullable": true
+          }
+        }
+      }
+    }
+  }

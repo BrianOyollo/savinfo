@@ -174,7 +174,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -186,7 +186,7 @@ SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
       'Your App API - Swagger': {
          'type': 'oauth2',
-         'authorizationUrl': None,
+        #  'authorizationUrl': "https://accounts.google.com/o/oauth2/auth",
          'tokenUrl': 'http://127.0.0.1:8000/oauth/token',
          'flow': 'password',
       }
@@ -196,4 +196,6 @@ SWAGGER_SETTINGS = {
       'clientSecret': os.getenv('client_secret'),
    },
    'DEFAULT_INFO': 'savinfo.urls.api_info',
+   'SPEC_URL': '/static/swagger/swagger.json',
+   'DEFAULT_MODEL_RENDERING': 'example'
 }
