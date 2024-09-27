@@ -12,7 +12,7 @@ This project is a simple API service that allows you to manage customers and the
 
 
 ## API Documentation
-View the API documentation at `http://127.0.0.1:8000/api/docs/` to explore endpoints interactively.
+View the API documentation at `https://4mx-astute-joule.circumeo-apps.net/api/docs/` to explore endpoints interactively.
 
 ## Installation
 1. **Clone the repository:**
