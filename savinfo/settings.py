@@ -187,7 +187,7 @@ SWAGGER_SETTINGS = {
       'Your App API - Swagger': {
          'type': 'oauth2',
         #  'authorizationUrl': "https://accounts.google.com/o/oauth2/auth",
-         'tokenUrl': 'http://127.0.0.1:8000/oauth/token',
+         'tokenUrl': "https://4mx-astute-joule.circumeo-apps.net/oauth/token", # use 'http://127.0.0.1:8000/oauth/token' in development
          'flow': 'password',
       }
    },
