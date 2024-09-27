@@ -15,7 +15,7 @@
     "securityDefinitions": {
       "Your App API - Swagger": {
         "type": "oauth2",
-        "tokenUrl": "http://127.0.0.1:8000/oauth/token",
+        "tokenUrl": "https://4mx-astute-joule.circumeo-apps.net/oauth/token",
         "flow": "password"
       }
     },
