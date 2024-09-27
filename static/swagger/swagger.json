@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
       "title": "Savinfo API",
-      "description": "Savannah Informatics Backend Technical Challenge",
+      "description": "Savannah Informatics Backend Technical Challenge.",
       "version": "v1"
     },
     "basePath": "/",
